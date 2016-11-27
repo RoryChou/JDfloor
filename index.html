@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JDfloor</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			#container {
+				width: 1200px;
+				height: 7200px;
+				margin: 0 auto;
+			}
+			#container .content,#container .floor-item{
+				height: 800px;
+				font: 100px/800px "微软雅黑";
+				color: #fff;
+				background-color: #c33;
+				text-align: center;
+			}
+			.bar {
+				position: fixed;
+				display: none;
+				width: 30px;
+				height: 240px;				
+				top: 50%;
+				left: 50px;
+				margin-top: -120px;
+			}
+			.bar .bar-item {
+				height: 30px;
+				color: #fff;
+				font: 14px/30px "";
+				text-align: center;
+				background-color: #c33;
+				border-bottom: 1px solid #fff;
+				cursor: pointer;
+			}
+			.bar .bar-item.active {
+				background-color: #fff;
+				color: #c33;
+			}
+			.bar .bar-item:hover {
+				background-color: #999;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<div class="content">main</div>
+			<div class="floor-item">1</div>
+			<div class="floor-item">2</div>
+			<div class="floor-item">3</div>
+			<div class="floor-item">4</div>
+			<div class="floor-item">5</div>
+			<div class="floor-item">6</div>
+			<div class="floor-item">7</div>
+			<div class="floor-item">8</div>
+		</div>
+		<div class="bar">
+			<div class="bar-item">1</div>
+			<div class="bar-item">2</div>
+			<div class="bar-item">3</div>
+			<div class="bar-item">4</div>
+			<div class="bar-item">5</div>
+			<div class="bar-item">6</div>
+			<div class="bar-item">7</div>
+			<div class="bar-item">8</div>
+		</div>
+		
+		<script src="js/jquery.1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function(){
+				var flooritems = $(".floor-item");
+				var baritems = $(".bar-item");
+				var bar = $(".bar");
+				flooritems.each(function(k,v){
+					var color = parseInt((Math.random()*4095)).toString(16);
+					$(v).css({
+						backgroundColor:"#"+color
+					})
+				});
+				$(window).scroll(function(){
+					var scrTop = $(this).scrollTop();
+					//bar的显示与隐藏
+					if(scrTop > 800){
+						bar.show();
+					}else{
+						bar.hide();
+					};
+					//get floor
+					var num = Math.floor((scrTop+250)/800)-1;					
+					//bar follow
+					$(baritems[num]).addClass("active").siblings().removeClass("active");				
+				});
+				function choose(){
+					//choose floor
+					baritems.each(function(){
+						$(this).on("click",function(){
+							var num = ($(this).index()+1)*800;
+							$("body").stop(true).animate({
+								scrollTop:num
+							})
+						})
+					})
+				};
+				choose();
+			})
+		</script>
+	</body>
+</html>
